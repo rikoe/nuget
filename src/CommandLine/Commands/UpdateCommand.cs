@@ -35,6 +35,9 @@ namespace NuGet.Commands
         [Option(typeof(NuGetCommand), "UpdateCommandSelfDescription")]
         public bool Self { get; set; }
 
+        [Option(typeof(NuGetCommand), "UpdateCommandVersionDescription")]
+        public string Version { get; set; }
+
         [Option(typeof(NuGetCommand), "UpdateCommandVerboseDescription")]
         public bool Verbose { get; set; }
 
@@ -337,7 +340,8 @@ namespace NuGet.Commands
                             }
                             else
                             {
-                                projectManager.UpdatePackageReference(package.Id, version: null, updateDependencies: true, allowPrereleaseVersions: allowPrerelease);
+                                var version = Version != null ? new SemanticVersion(Version) : null;
+                                projectManager.UpdatePackageReference(package.Id, version, updateDependencies: true, allowPrereleaseVersions: allowPrerelease);
                             }
                         }
                         catch (InvalidOperationException e)
